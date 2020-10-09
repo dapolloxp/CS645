@@ -18,6 +18,55 @@ public class Cracker
         BigInteger bi = new BigInteger(1, bytes);
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
+    /*
+    static String theHash(String message) throws NoSuchAlgorithmException {
+        if (null == messageHash)
+            messageHash = MessageDigest.getInstance("MD5");
+        byte[] digest = messageHash.digest(message.trim().getBytes());
+        String rv = toHex(digest);
+        return rv;
+    }*/
+
+    public static String toHash(String msg_in) throws NoSuchAlgorithmException
+    {
+
+        byte[] byte_array = msg_in.getBytes();
+        String hashed_string = new String();
+        System.out.print("Testing String to Byte: ");
+        for(byte b: byte_array){
+            System.out.print(b);
+        }
+        try
+        {
+            // creating the object of MessageDigest
+            // and getting instance
+            // By using getInstance() method
+            MessageDigest sr = MessageDigest.getInstance("MD5");
+            byte[] digest = sr.digest(byte_array);
+            System.out.println(toHex(digest));
+            // getting the status of MessageDigest object
+            String str = sr.toString();
+
+            // printing the status
+            //System.out.println("Status : " + str);
+            hashed_string = toHex(digest);
+            System.out.println("digest : " + toHex(digest));
+
+
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+
+            System.out.println("Exception thrown : " + e);
+        }
+        catch (NullPointerException e)
+        {
+
+            System.out.println("Exception thrown : " + e);
+        }
+        return hashed_string;
+
+    }
 
     public static ArrayList<String> readFile(String fileName)
     {
@@ -35,15 +84,6 @@ public class Cracker
                 //System.out.println(data);
             }
             fReader.close();
-            /*
-            Scanner fReader2 = new Scanner(ShadowFile);
-            while (fReader2.hasNextLine())
-            {
-                String data = fReader2.nextLine();
-                SimpleShadow.add(data);
-                //System.out.println(data);
-            }
-            fReader2.close();*/
 
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
@@ -53,45 +93,12 @@ public class Cracker
         return localbuffer;
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws NoSuchAlgorithmException
     {
-        // Testing string to byte output
 
-        String str2 = new String("aaahhhhhhh");
-        byte[] array1 = str2.getBytes();
-        System.out.print("Testing String to Byte: ");
-        for(byte b: array1){
-            System.out.print(b);
-        }
+        // Testing MD5 Hashing
 
-
-        // Creating MessageDigest using MD5
-
-        try
-        {
-            // creating the object of MessageDigest
-            // and getting instance
-            // By using getInstance() method
-            MessageDigest sr = MessageDigest.getInstance("MD5");
-            byte[] digest = sr.digest(array1);
-            System.out.println(toHex(digest));
-            // getting the status of MessageDigest object
-            String str = sr.toString();
-
-            // printing the status
-            System.out.println("Status : " + str);
-        }
-        catch (NoSuchAlgorithmException e)
-        {
-
-            System.out.println("Exception thrown : " + e);
-        }
-        catch (NullPointerException e)
-        {
-
-            System.out.println("Exception thrown : " + e);
-        }
-
+        System.out.println(toHash("hello"));
 
         // Loading common-passwords.txt and shadow-simple
         ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
@@ -130,13 +137,22 @@ public class Cracker
             shadow_matrix.add(row);
 
         }
+
+        ArrayList<String> passwordDict = new ArrayList<String>();
+        ArrayList<String> hashes = new ArrayList<String>();
+
         for (ArrayList<String> row : shadow_matrix)
         {
-            System.out.println(("userid: " + row.get(0) + " salt: " + row.get(1) + " hash: " + row.get(2)));
+            //System.out.println(("userid: " + row.get(0) + " salt: " + row.get(1) + " hash: " + row.get(2)));
+            hashes.add(row.get(1));
         }
+
+        System.out.println(hashes);
 
         // Break input string delimiter
 
-        // Convert to crypto with salt and
+        // Convert to crypto with salt and password
+
+
     }
 }
