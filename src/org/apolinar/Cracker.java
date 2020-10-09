@@ -33,9 +33,9 @@ public class Cracker
         byte[] byte_array = msg_in.getBytes();
         String hashed_string = new String();
         System.out.print("Testing String to Byte: ");
-        for(byte b: byte_array){
+        /*for(byte b: byte_array){
             System.out.print(b);
-        }
+        }*/
         try
         {
             // creating the object of MessageDigest
@@ -50,8 +50,7 @@ public class Cracker
             // printing the status
             //System.out.println("Status : " + str);
             hashed_string = toHex(digest);
-            System.out.println("digest : " + toHex(digest));
-
+            //System.out.println("digest : " + toHex(digest));
 
         }
         catch (NoSuchAlgorithmException e)
@@ -106,6 +105,7 @@ public class Cracker
 
 
         ArrayList<String> PasswordHashedList = new ArrayList<String>();
+        Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
         //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         // write your code here
@@ -114,8 +114,17 @@ public class Cracker
         System.out.println((MD5Shadow.crypt("aaa", "qtoUil1J")));
         System.out.println("-------------");
         System.out.println(PasswordList);
-        PasswordList.forEach((n) -> PasswordHashedList.add(MD5Shadow.crypt(n, "123")));
-        //System.out.println(PasswordHashedList);
+
+        // Generate password to MD5 table
+
+        PasswordList.forEach((n) -> {
+            try {
+                Password_Hash_Table.put(n, toHash(n));
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        });
+        System.out.println(Password_Hash_Table );
 
         // Get Simple Shadow File
 
@@ -140,6 +149,8 @@ public class Cracker
 
         ArrayList<String> passwordDict = new ArrayList<String>();
         ArrayList<String> hashes = new ArrayList<String>();
+
+
 
         for (ArrayList<String> row : shadow_matrix)
         {
