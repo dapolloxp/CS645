@@ -19,16 +19,54 @@ public class Cracker
         return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 
+    public static ArrayList<String> readFile(String fileName)
+    {
+        ArrayList<String> localbuffer = new ArrayList<String>();
+        try {
+            File PassFile = new File(System.getProperty("user.dir") + fileName);
+            File ShadowFile = new File(System.getProperty("user.dir") + "//input//shadow-simple");
+            //System.out.println("file_name: " + PassFile);
+            //System.out.println("shadow file: " + ShadowFile);
+            Scanner fReader = new Scanner(PassFile);
+            while (fReader.hasNextLine())
+            {
+                String data = fReader.nextLine();
+                localbuffer.add(data);
+                //System.out.println(data);
+            }
+            fReader.close();
+            /*
+            Scanner fReader2 = new Scanner(ShadowFile);
+            while (fReader2.hasNextLine())
+            {
+                String data = fReader2.nextLine();
+                SimpleShadow.add(data);
+                //System.out.println(data);
+            }
+            fReader2.close();*/
+
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        return localbuffer;
+    }
 
     public static void main(String[] args)
     {
+        // Testing string to byte output
+
         String str2 = new String("aaahhhhhhh");
         byte[] array1 = str2.getBytes();
-        System.out.print("Default Charset encoding:");
+        System.out.print("Testing String to Byte: ");
         for(byte b: array1){
             System.out.print(b);
         }
-        System.out.print("\nUTF-16 Charset encoding:\n");
+
+
+        // Creating MessageDigest using MD5
+
         try
         {
             // creating the object of MessageDigest
@@ -55,40 +93,13 @@ public class Cracker
         }
 
 
+        // Loading common-passwords.txt and shadow-simple
+        ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
+        ArrayList<String> SimpleShadow = readFile("//input//shadow-simple");
 
 
-
-        ArrayList<String> PasswordList = new ArrayList<String>();
         ArrayList<String> PasswordHashedList = new ArrayList<String>();
-        ArrayList<String> SimpleShadow = new ArrayList<String>();
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        try {
-            File PassFile = new File(System.getProperty("user.dir") + "//input//common-passwords.txt");
-            File ShadowFile = new File(System.getProperty("user.dir") + "//input//shadow-simple");
-            //System.out.println("file_name: " + PassFile);
-            //System.out.println("shadow file: " + ShadowFile);
-            Scanner fReader = new Scanner(PassFile);
-            while (fReader.hasNextLine())
-            {
-                String data = fReader.nextLine();
-                PasswordList.add(data);
-                //System.out.println(data);
-            }
-            fReader.close();
-
-            Scanner fReader2 = new Scanner(ShadowFile);
-            while (fReader2.hasNextLine())
-            {
-                String data = fReader2.nextLine();
-                SimpleShadow.add(data);
-                //System.out.println(data);
-            }
-            fReader2.close();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
+        //System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         // write your code here
 
