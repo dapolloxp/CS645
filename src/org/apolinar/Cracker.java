@@ -32,7 +32,7 @@ public class Cracker
 
         byte[] byte_array = msg_in.getBytes();
         String hashed_string = new String();
-        System.out.print("Testing String to Byte: ");
+        //System.out.print("Testing String to Byte: ");
         /*for(byte b: byte_array){
             System.out.print(b);
         }*/
@@ -43,7 +43,7 @@ public class Cracker
             // By using getInstance() method
             MessageDigest sr = MessageDigest.getInstance("MD5");
             byte[] digest = sr.digest(byte_array);
-            System.out.println(toHex(digest));
+            //System.out.println(toHex(digest));
             // getting the status of MessageDigest object
             String str = sr.toString();
 
@@ -97,7 +97,6 @@ public class Cracker
 
         // Testing MD5 Hashing
 
-        System.out.println(toHash("hello"));
 
         // Loading common-passwords.txt and shadow-simple
         ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
@@ -111,20 +110,21 @@ public class Cracker
         // write your code here
 
         //MD5Shadow test = new MD5Shadow();
-        System.out.println((MD5Shadow.crypt("aaa", "qtoUil1J")));
-        System.out.println("-------------");
-        System.out.println(PasswordList);
+        //System.out.println((MD5Shadow.crypt("aaa", "qtoUil1J")));
+        //System.out.println("-------------");
+       // System.out.println(PasswordList);
 
         // Generate password to MD5 table
 
         PasswordList.forEach((n) -> {
             try {
-                Password_Hash_Table.put(n, toHash(n));
+                Password_Hash_Table.put(toHash(n), n);
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
         });
-        System.out.println(Password_Hash_Table );
+        System.out.println(Password_Hash_Table.get("D599EAE7A636D54C1C707514B1A76D77") );
+        System.out.println(Password_Hash_Table.containsKey("D599EAE7A636D54C1C707514B1A76D77"));
 
         // Get Simple Shadow File
 
@@ -151,14 +151,25 @@ public class Cracker
         ArrayList<String> hashes = new ArrayList<String>();
 
 
-
+        /*
         for (ArrayList<String> row : shadow_matrix)
         {
             //System.out.println(("userid: " + row.get(0) + " salt: " + row.get(1) + " hash: " + row.get(2)));
             hashes.add(row.get(1));
-        }
+        }*/
 
-        System.out.println(hashes);
+        //System.out.println(hashes);
+
+        for (ArrayList<String> row : shadow_matrix)
+        {
+
+            System.out.println("Checking hash " + row.get(2));
+            if (Password_Hash_Table.containsKey(row.get(2)))
+            {
+                System.out.println("User: " + "Hash: " + row.get(2) + " --> " + Password_Hash_Table.get(row.get(2)));
+            }
+            //hashes.add(row.get(1));
+        }
 
         // Break input string delimiter
 
