@@ -116,15 +116,9 @@ public class Cracker
 
         // Generate password to MD5 table
 
-        PasswordList.forEach((n) -> {
-            try {
-                Password_Hash_Table.put(toHash(n), n);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        });
-        System.out.println(Password_Hash_Table.get("D599EAE7A636D54C1C707514B1A76D77") );
-        System.out.println(Password_Hash_Table.containsKey("D599EAE7A636D54C1C707514B1A76D77"));
+
+        //System.out.println(Password_Hash_Table.get("D599EAE7A636D54C1C707514B1A76D77") );
+        //System.out.println(Password_Hash_Table.containsKey("D599EAE7A636D54C1C707514B1A76D77"));
 
         // Get Simple Shadow File
 
@@ -147,6 +141,21 @@ public class Cracker
 
         }
 
+        // Create Table using salts
+
+        PasswordList.forEach((n) ->
+        {
+            try
+            {
+                for (ArrayList<String> row : shadow_matrix)
+                {
+                    Password_Hash_Table.put(toHash(row.get(1) + n), n);
+                }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        });
+
         ArrayList<String> passwordDict = new ArrayList<String>();
         ArrayList<String> hashes = new ArrayList<String>();
 
@@ -155,7 +164,8 @@ public class Cracker
         for (ArrayList<String> row : shadow_matrix)
         {
             //System.out.println(("userid: " + row.get(0) + " salt: " + row.get(1) + " hash: " + row.get(2)));
-            hashes.add(row.get(1));
+            System.out.println("Adding: " + toHash(MD5Shadow.crypt(row.get(1), row.get(2))));
+            hashes.add(toHash(MD5Shadow.crypt(row.get(1), row.get(2))));
         }*/
 
         //System.out.println(hashes);
@@ -163,17 +173,14 @@ public class Cracker
         for (ArrayList<String> row : shadow_matrix)
         {
 
-            System.out.println("Checking hash " + row.get(2));
+            //System.out.println("Checking hash " + row.get(2));
             if (Password_Hash_Table.containsKey(row.get(2)))
             {
-                System.out.println("User: " + "Hash: " + row.get(2) + " --> " + Password_Hash_Table.get(row.get(2)));
+                System.out.println("Found User Password: " + "Hash: " + row.get(2) + " --> " + Password_Hash_Table.get(row.get(2)));
             }
             //hashes.add(row.get(1));
         }
 
-        // Break input string delimiter
-
-        // Convert to crypto with salt and password
 
 
     }
