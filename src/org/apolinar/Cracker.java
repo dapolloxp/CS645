@@ -1,7 +1,6 @@
 package org.apolinar;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -9,9 +8,11 @@ import java.util.Scanner; // Import the Scanner class to read text files
 import java.security.*;
 import java.util.*;
 
-public class SimpleCracker
+
+
+public class Cracker
 {
-    // Compute Hex
+
     public static String toHex(byte[] bytes)
     {
         BigInteger bi = new BigInteger(1, bytes);
@@ -58,6 +59,7 @@ public class SimpleCracker
 
     }
 
+
     // Load File
     public static ArrayList<String> readFile(String fileName)
     {
@@ -84,10 +86,11 @@ public class SimpleCracker
 
     public static void main(String[] args) throws NoSuchAlgorithmException
     {
-
-        // Loading common-passwords.txt and shadow-simple
+        //System.out.println("test");
         ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
-        ArrayList<String> SimpleShadow = readFile("//input//shadow-simple");
+        ArrayList<String> Shadow = readFile("//input//shadow");
+
+        //System.out.println(Shadow);
 
         //ArrayList<String> PasswordHashedList = new ArrayList<String>();
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
@@ -95,48 +98,57 @@ public class SimpleCracker
         // 2-Dim ArrayList to store shadow file as a matrix
         ArrayList<ArrayList<String>> shadow_matrix = new ArrayList<>(10);
 
-
-        // Create Shadow Matrix File User:Salt:Password per row
-
-        for(String line : SimpleShadow)
+        for(String line : Shadow)
         {
             List<String> Shadow_line = Arrays.asList(line.split(":"));
 
             // Create Temp Row to add to the Matrix
             ArrayList<String> row = new ArrayList<>(Shadow_line.toArray().length);
             row.add(Shadow_line.toArray()[0].toString());
-            row.add(Shadow_line.toArray()[1].toString());
-
-
-            row.add(Shadow_line.toArray()[2].toString());
+            //row.add(Shadow_line.toArray()[1].toString());
+            //row.add(Shadow_line.toArray()[2].toString());
             // Add line
+            String [] password_split = Shadow_line.toArray()[1].toString().split("\\$");
+            //System.out.println("salt: " + password_split[2] + " hash: " + password_split[3]);
+            row.add(password_split[2]);
+            row.add(password_split[3]);
             shadow_matrix.add(row);
         }
-
-        // Create rainbow table using salts
+        //System.out.println((shadow_matrix.get(0).get(1)));
+        //System.out.println((shadow_matrix.get(0).get(2)));
+        //System.out.println(shadow_matrix);
+        //System.out.println(toHash(MD5Shadow.crypt(shadow_matrix.get(0).get(1), shadow_matrix.get(0).get(2))));
 
         PasswordList.forEach((n) ->
         {
-            try
+            for (ArrayList<String> row : shadow_matrix)
             {
-                for (ArrayList<String> row : shadow_matrix)
-                {
-                    // Add hash using each user's salt
-                    Password_Hash_Table.put(toHash(row.get(1) + n), n);
+                // Add hash using each user's salt
+                //System.out.println("salt " + row.get(1) + " string " + n + " computed hash " + toHash(MD5Shadow.crypt(row.get(1), n)));
+                try {
+                    Password_Hash_Table.put( toHash(MD5Shadow.crypt(n, row.get(1))), n);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
                 }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
             }
         });
-
+        //System.out.println(Password_Hash_Table);
         // Check each shadow entry against our rainbow table
 
         for (ArrayList<String> row : shadow_matrix)
         {
-            if (Password_Hash_Table.containsKey(row.get(2)))
+            //System.out.println("Checking hash " + toHash(row.get(2)));
+            //System.out.println("Checking hash " + toHash(MD5Shadow(row.get(1))));
+            if (Password_Hash_Table.containsKey(toHash(row.get(2))))
             {
-                System.out.println("Found User Password: " + "Hash: " + row.get(2) + " --> " + Password_Hash_Table.get(row.get(2)));
+                System.out.println("Found Password for " + row
+                        .get(0) + ": " + Password_Hash_Table.get(toHash(row.get(2))));
+            }
+            else
+            {
+                System.out.println("Did not find password for " + row.get(0));
             }
         }
     }
 }
+
