@@ -10,7 +10,7 @@ import java.util.Scanner; // Import the Scanner class to read text files
 import java.security.*;
 import java.util.*;
 
-public class Cracker
+public class SimpleCracker
 {
 
     public static String toHex(byte[] bytes)
