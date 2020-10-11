@@ -87,8 +87,8 @@ public class Cracker
     public static void main(String[] args) throws NoSuchAlgorithmException
     {
         //System.out.println("test");
-        ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
-        ArrayList<String> Shadow = readFile("//input//shadow");
+        ArrayList<String> PasswordList = readFile("//common-passwords-2.txt");
+        ArrayList<String> Shadow = readFile("//shadow");
 
         //System.out.println(Shadow);
 

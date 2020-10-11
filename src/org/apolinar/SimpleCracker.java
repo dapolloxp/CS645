@@ -86,8 +86,8 @@ public class SimpleCracker
     {
 
         // Loading common-passwords.txt and shadow-simple
-        ArrayList<String> PasswordList = readFile("//input//common-passwords.txt");
-        ArrayList<String> SimpleShadow = readFile("//input//shadow-simple");
+        ArrayList<String> PasswordList = readFile("//common-passwords.txt");
+        ArrayList<String> SimpleShadow = readFile("//shadow-simple");
 
         //ArrayList<String> PasswordHashedList = new ArrayList<String>();
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
@@ -135,7 +135,7 @@ public class SimpleCracker
         {
             if (Password_Hash_Table.containsKey(row.get(2)))
             {
-                System.out.println("Found User Password: " + "Hash: " + row.get(2) + " --> " + Password_Hash_Table.get(row.get(2)));
+                System.out.println("Found user password for " + row.get(0) +  " --> " + Password_Hash_Table.get(row.get(2)));
             }
         }
     }
