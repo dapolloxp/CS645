@@ -139,12 +139,20 @@ public class SimpleCracker
         });
 
         // Check each shadow entry against our rainbow table
+        int count = 0;
+        //System.out.println("Found user passwords for the following users...");
         for (ArrayList<String> row : shadow_matrix)
         {
+
             if (Password_Hash_Table.containsKey(row.get(2)))
             {
-                System.out.println("Found user password for " + row.get(0) +  " --> " + Password_Hash_Table.get(row.get(2)));
+                count++;
+                System.out.println(row.get(0) +  ":" + Password_Hash_Table.get(row.get(2)));
             }
+        }
+        if(count == 0)
+        {
+            System.out.println("Did not find any passwords");
         }
     }
 }

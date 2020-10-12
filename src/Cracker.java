@@ -81,8 +81,28 @@ public class Cracker
 
     public static void main(String[] args) throws NoSuchAlgorithmException
     {
-        ArrayList<String> PasswordList = readFile("//common-passwords.txt");
-        ArrayList<String> Shadow = readFile("//shadow");
+
+        // Loading common-passwords.txt and shadow-simple
+        ArrayList<String> PasswordList = new ArrayList<String>();
+        ArrayList<String> Shadow = new ArrayList<String>();
+        if(args.length < 1)
+        {
+
+            PasswordList = readFile("//common-passwords.txt");
+            Shadow = readFile("//shadow");
+        }
+        else if(args.length == 2)
+        {
+            PasswordList = readFile("//" + args[0]);
+            Shadow = readFile("//" + args[1]);
+        }
+        else
+        {
+            System.out.println("Error, usage: java ClassName password_file shadow_file");
+            System.exit(1);
+        }
+
+
 
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
 
@@ -124,12 +144,8 @@ public class Cracker
         {
             if (Password_Hash_Table.containsKey(toHash(row.get(2))))
             {
-                System.out.println("Found Password for " + row
-                        .get(0) + ": " + Password_Hash_Table.get(toHash(row.get(2))));
-            }
-            else
-            {
-                System.out.println("Did not find password for " + row.get(0));
+                System.out.println(row
+                        .get(0) + ":" + Password_Hash_Table.get(toHash(row.get(2))));
             }
         }
     }
