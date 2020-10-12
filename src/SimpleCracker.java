@@ -91,8 +91,8 @@ public class SimpleCracker
         }
         else if(args.length == 2)
         {
-            PasswordList = readFile(args[0]);
-            SimpleShadow = readFile(args[1]);
+            PasswordList = readFile("//" + args[0]);
+            SimpleShadow = readFile("//" + args[1]);
         }
         else
         {
