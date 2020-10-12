@@ -1,7 +1,9 @@
+// David Apolinar and Ted Moore
+// CS645 - Fall 2020
+
 package org.apolinar;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.lang.reflect.Array;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -24,24 +26,17 @@ public class SimpleCracker
         byte[] byte_array = msg_in.getBytes();
         String hashed_string = new String();
 
-        //System.out.print("Testing String to Byte: ");
-        /*for(byte b: byte_array){
-            System.out.print(b);
-        }*/
         try
         {
             // creating the object of MessageDigest and get instance by using getInstance method
-
             MessageDigest sr = MessageDigest.getInstance("MD5");
             byte[] digest = sr.digest(byte_array);
 
             // getting the status of MessageDigest object
             String str = sr.toString();
 
-            // printing the status
-            //System.out.println("Status : " + str);
+            // conver to Hex string
             hashed_string = toHex(digest);
-            //System.out.println("digest : " + toHex(digest));
 
         }
         catch (NoSuchAlgorithmException e)
@@ -97,7 +92,6 @@ public class SimpleCracker
 
 
         // Create Shadow Matrix File User:Salt:Password per row
-
         for(String line : SimpleShadow)
         {
             List<String> Shadow_line = Arrays.asList(line.split(":"));
@@ -106,15 +100,13 @@ public class SimpleCracker
             ArrayList<String> row = new ArrayList<>(Shadow_line.toArray().length);
             row.add(Shadow_line.toArray()[0].toString());
             row.add(Shadow_line.toArray()[1].toString());
-
-
             row.add(Shadow_line.toArray()[2].toString());
+
             // Add line
             shadow_matrix.add(row);
         }
 
         // Create rainbow table using salts
-
         PasswordList.forEach((n) ->
         {
             try
@@ -130,7 +122,6 @@ public class SimpleCracker
         });
 
         // Check each shadow entry against our rainbow table
-
         for (ArrayList<String> row : shadow_matrix)
         {
             if (Password_Hash_Table.containsKey(row.get(2)))
