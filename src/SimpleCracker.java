@@ -3,6 +3,7 @@
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -76,12 +77,29 @@ public class SimpleCracker
         return localbuffer;
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException
+    public static void main(String[] args) throws IOException
     {
 
         // Loading common-passwords.txt and shadow-simple
-        ArrayList<String> PasswordList = readFile("//common-passwords.txt");
-        ArrayList<String> SimpleShadow = readFile("//shadow-simple");
+        ArrayList<String> PasswordList = new ArrayList<String>();
+        ArrayList<String> SimpleShadow = new ArrayList<String>();
+        if(args.length < 1)
+        {
+
+            PasswordList = readFile("//common-passwords.txt");
+            SimpleShadow = readFile("//shadow-simple");
+        }
+        else if(args.length == 2)
+        {
+            PasswordList = readFile(args[0]);
+            SimpleShadow = readFile(args[1]);
+        }
+        else
+        {
+            System.out.println("Error, usage: java ClassName password_file shadow_file");
+            System.exit(1);
+        }
+
 
         //ArrayList<String> PasswordHashedList = new ArrayList<String>();
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
