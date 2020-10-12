@@ -1,4 +1,4 @@
-package org.apolinar; /*******
+/*******
 * Prepared for Project 1, CS 645, Fall 2020, NJIT
 *******/
 
