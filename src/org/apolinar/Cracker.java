@@ -1,3 +1,6 @@
+// David Apolinar and Ted Moore
+// CS645 - Fall 2020
+
 package org.apolinar;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
@@ -7,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.security.*;
 import java.util.*;
-
 
 
 public class Cracker
@@ -25,24 +27,16 @@ public class Cracker
         byte[] byte_array = msg_in.getBytes();
         String hashed_string = new String();
 
-        //System.out.print("Testing String to Byte: ");
-        /*for(byte b: byte_array){
-            System.out.print(b);
-        }*/
         try
         {
             // creating the object of MessageDigest and get instance by using getInstance method
-
             MessageDigest sr = MessageDigest.getInstance("MD5");
             byte[] digest = sr.digest(byte_array);
 
             // getting the status of MessageDigest object
             String str = sr.toString();
 
-            // printing the status
-            //System.out.println("Status : " + str);
             hashed_string = toHex(digest);
-            //System.out.println("digest : " + toHex(digest));
 
         }
         catch (NoSuchAlgorithmException e)
@@ -86,13 +80,9 @@ public class Cracker
 
     public static void main(String[] args) throws NoSuchAlgorithmException
     {
-        //System.out.println("test");
         ArrayList<String> PasswordList = readFile("//common-passwords.txt");
         ArrayList<String> Shadow = readFile("//shadow");
 
-        //System.out.println(Shadow);
-
-        //ArrayList<String> PasswordHashedList = new ArrayList<String>();
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
 
         // 2-Dim ArrayList to store shadow file as a matrix
@@ -105,26 +95,21 @@ public class Cracker
             // Create Temp Row to add to the Matrix
             ArrayList<String> row = new ArrayList<>(Shadow_line.toArray().length);
             row.add(Shadow_line.toArray()[0].toString());
-            //row.add(Shadow_line.toArray()[1].toString());
-            //row.add(Shadow_line.toArray()[2].toString());
-            // Add line
+
             String [] password_split = Shadow_line.toArray()[1].toString().split("\\$");
-            //System.out.println("salt: " + password_split[2] + " hash: " + password_split[3]);
-            row.add(password_split[2]);
-            row.add(password_split[3]);
+            row.add(password_split[2]); // salt
+            row.add(password_split[3]); // crypt password
+
+            // Add line
             shadow_matrix.add(row);
         }
-        //System.out.println((shadow_matrix.get(0).get(1)));
-        //System.out.println((shadow_matrix.get(0).get(2)));
-        //System.out.println(shadow_matrix);
-        //System.out.println(toHash(MD5Shadow.crypt(shadow_matrix.get(0).get(1), shadow_matrix.get(0).get(2))));
 
+        // Create hash representation of all passwords with users' salt
         PasswordList.forEach((n) ->
         {
             for (ArrayList<String> row : shadow_matrix)
             {
                 // Add hash using each user's salt
-                //System.out.println("salt " + row.get(1) + " string " + n + " computed hash " + toHash(MD5Shadow.crypt(row.get(1), n)));
                 try {
                     Password_Hash_Table.put( toHash(MD5Shadow.crypt(n, row.get(1))), n);
                 } catch (NoSuchAlgorithmException e) {
@@ -132,13 +117,10 @@ public class Cracker
                 }
             }
         });
-        //System.out.println(Password_Hash_Table);
-        // Check each shadow entry against our rainbow table
 
+        // Check each shadow entry against our rainbow table
         for (ArrayList<String> row : shadow_matrix)
         {
-            //System.out.println("Checking hash " + toHash(row.get(2)));
-            //System.out.println("Checking hash " + toHash(MD5Shadow(row.get(1))));
             if (Password_Hash_Table.containsKey(toHash(row.get(2))))
             {
                 System.out.println("Found Password for " + row
