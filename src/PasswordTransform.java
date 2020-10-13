@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 class PasswordTransform extends RecursiveAction {
     //int[] array;
     int number;
-    int threshold = 100;
-    //int threshold = 16_000_000;
+    //int threshold = 100;
+    int threshold = 16_000_000;
     int start;
     int end;
     ArrayList<String> chunked_password_list;
