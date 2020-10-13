@@ -39,7 +39,7 @@ class PasswordTransform extends RecursiveAction {
         } else // split it further
         {
             //   int middle = (end + start) / 2;
-            //System.out.println("Dividing and conquering....");
+            System.out.println("Dividing and conquering....");
             //ArrayTransform subTask1 = new ArrayTransform(array, number, start, middle);
             //ArrayTransform subTask2 = new ArrayTransform(array, number, middle, end);
             //System.out.println(this.chunked_password_list.subList());
@@ -52,6 +52,7 @@ class PasswordTransform extends RecursiveAction {
             PasswordTransform computeMD5Task_s2 = new PasswordTransform(temp2, 4, middle, end, this.shadow_matrix);
 
             invokeAll(computeMD5Task_s1, computeMD5Task_s2);
+
         }
     }
 
