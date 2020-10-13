@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text files
 
-class CrackerMT
-{
 
+public class MultiCracker
+{
     public static ArrayList<String> readFile(String fileName)
     {
         ArrayList<String> localbuffer = new ArrayList<String>();
@@ -91,6 +91,4 @@ class CrackerMT
         PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 4, 0, PasswordList.size(), shadow_matrix);
         pool.invoke(computeMD5Task);
     }
-
-
 }
