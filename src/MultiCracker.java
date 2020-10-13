@@ -23,11 +23,17 @@ public class MultiCracker
             File PassFile = new File(System.getProperty("user.dir") + fileName);
 
             // Create a new file scanner
+            int line = 0;
             Scanner fReader = new Scanner(PassFile);
             while (fReader.hasNextLine())
             {
                 String data = fReader.nextLine();
+                line++;
                 localbuffer.add(data);
+                if (line % 10000 == 0)
+                {
+                    System.out.println(("line: " + line));
+                }
             }
             fReader.close();
 
@@ -104,7 +110,7 @@ public class MultiCracker
             System.out.printf("******************************************\n");
             try
             {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e)
             {
                 e.printStackTrace();

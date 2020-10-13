@@ -69,6 +69,7 @@ public class Cracker
             {
                 String data = fReader.nextLine();
                 localbuffer.add(data);
+
             }
             fReader.close();
 
