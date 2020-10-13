@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.security.*;
 import java.util.*;
-
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class Cracker
@@ -126,22 +126,31 @@ public class Cracker
         }
 
         // Create hash representation of all passwords with users' salt
+        AtomicLong count = new AtomicLong();
         PasswordList.forEach((n) ->
         {
             for (ArrayList<String> row : shadow_matrix)
             {
                 // Add hash using each user's salt
+
+
                 try {
+
                     Password_Hash_Table.put( toHash(MD5Shadow.crypt(n, row.get(1))), n);
+                    count.getAndIncrement();
+
+
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
+
             }
         });
 
         // Check each shadow entry against our rainbow table
         for (ArrayList<String> row : shadow_matrix)
         {
+
             if (Password_Hash_Table.containsKey(toHash(row.get(2))))
             {
                 System.out.println(row
