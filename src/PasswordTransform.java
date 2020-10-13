@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 class PasswordTransform extends RecursiveAction {
     //int[] array;
     int number;
-    //int threshold = 100_000;
-    int threshold = 16_000_000;
+    int threshold = 100;
+    //int threshold = 16_000_000;
     int start;
     int end;
     ArrayList<String> chunked_password_list;
@@ -62,6 +62,7 @@ class PasswordTransform extends RecursiveAction {
         AtomicLong count = new AtomicLong();
         this.chunked_password_list.forEach((n) ->
         {
+            //System.out.println("processing " + n);
             for (ArrayList<String> row : shadow_matrix) {
                 // Add hash using each user's salt
 
@@ -70,7 +71,7 @@ class PasswordTransform extends RecursiveAction {
 
                     Password_Hash_Table.put(toHash(MD5Shadow.crypt(n, row.get(1))), n);
                     count.getAndIncrement();
-                    //System.out.println("processing " + count);
+
 
 
                 } catch (NoSuchAlgorithmException e) {
