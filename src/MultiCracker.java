@@ -71,7 +71,7 @@ public class MultiCracker
         }
         //System.out.println(PasswordList);
         //System.out.println(Shadow);
-
+        System.out.println("File Loaded...\n\n");
         Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
 
         // 2-Dim ArrayList to store shadow file as a matrix
