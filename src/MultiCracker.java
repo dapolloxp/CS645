@@ -97,7 +97,7 @@ public class MultiCracker
         ForkJoinPool pool = new ForkJoinPool();
         //System.out.println("begin: " + PasswordList.size());
         //System.out.println(5/2);
-        PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 365673, 0, PasswordList.size(), shadow_matrix);
+        PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 326000, 0, PasswordList.size(), shadow_matrix);
         //PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 20, 0, PasswordList.size(), shadow_matrix);
         pool.invoke(computeMD5Task);
 
