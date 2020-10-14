@@ -30,7 +30,7 @@ public class MultiCracker
                 String data = fReader.nextLine();
                 line++;
                 localbuffer.add(data);
-                if (line % 10000 == 0)
+                if (line % 1000000 == 0)
                 {
                     System.out.println(("line: " + line));
                 }
@@ -99,11 +99,11 @@ public class MultiCracker
         //System.out.println(5/2);
         PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 365673, 0, PasswordList.size(), shadow_matrix);
         //PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 20, 0, PasswordList.size(), shadow_matrix);
-        pool.execute(computeMD5Task);
+        pool.invoke(computeMD5Task);
 
 
 
-        do
+        /*do
         {
             //System.out.printf("******************************************\n");
            // System.out.printf("Main: Parallelism: %d\n", pool.getParallelism());
@@ -118,7 +118,7 @@ public class MultiCracker
             {
                 e.printStackTrace();
             }
-        } while ((!computeMD5Task.isDone()));
+        } while ((!computeMD5Task.isDone()));*/
 
         pool.shutdown();
     }
