@@ -10,39 +10,37 @@ class PasswordTransform extends RecursiveAction {
     //int[] array;
     int number;
     //int threshold = 100;
-    int threshold = 512_000;
+    int threshold = 2;
     int start;
     int end;
     ArrayList<String> chunked_password_list;
     ArrayList<ArrayList<String>> shadow_matrix;
     Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
 
-    public PasswordTransform(ArrayList<String> password_list_in, int number, int start, int end, ArrayList<ArrayList<String>> shadow_matrix) {
+    public PasswordTransform(ArrayList<String> password_list_in, int threshold, int start, int end, ArrayList<ArrayList<String>> shadow_matrix) {
         this.chunked_password_list = password_list_in;
         this.number = number;
         this.start = start;
         this.end = end;
         this.shadow_matrix = shadow_matrix;
+        this.threshold = threshold;
     }
 
     protected void compute() {
         // If the Password Files lines are  under the threshold, do the work
 
-        if (end - start < threshold) {
-            //System.out.println("start: " + start + " end: " + end + " end - start: " + (end - start) +"\n");
-            //System.out.println("middle: " + middle + " end: " + end);
-            try {
+        if (end - start < threshold)
+        {
+            try
+            {
                 computeDirectly();
-            } catch (NoSuchAlgorithmException e) {
+            }
+            catch (NoSuchAlgorithmException e)
+            {
                 e.printStackTrace();
             }
         } else // split it further
         {
-            //   int middle = (end + start) / 2;
-            System.out.println("Dividing and conquering....");
-            //ArrayTransform subTask1 = new ArrayTransform(array, number, start, middle);
-            //ArrayTransform subTask2 = new ArrayTransform(array, number, middle, end);
-            //System.out.println(this.chunked_password_list.subList());
             int middle = this.chunked_password_list.size() / 2;
             int end = this.chunked_password_list.size();
             //System.out.println("Current Size: " + this.chunked_password_list.size() + " middle: " + middle + " end: " + end);
@@ -56,40 +54,45 @@ class PasswordTransform extends RecursiveAction {
         }
     }
 
-    protected void computeDirectly() throws NoSuchAlgorithmException {
-        //System.out.println(this.threshold);
+    protected void computeDirectly() throws NoSuchAlgorithmException
+    {
 
-        //System.out.println("Computing the MD5 Directly");
         AtomicLong count = new AtomicLong();
         this.chunked_password_list.forEach((n) ->
         {
             //System.out.println("processing " + n);
-            for (ArrayList<String> row : shadow_matrix) {
-                // Add hash using each user's salt
+            for (ArrayList<String> row : shadow_matrix) //user
+            {
+                try
+                {
+                    // if row (user) has equals password hashed, output to screen
+                    String password_n_hash = toHash(MD5Shadow.crypt(n, row.get(1)));
+                    String user_shadow_hash = toHash(row.get(2));
+                    if(password_n_hash.equals(user_shadow_hash))
+                    {
+                        System.out.println(row.get(0) + ":" + n);
+                    }
 
-
-                try {
-
-                    Password_Hash_Table.put(toHash(MD5Shadow.crypt(n, row.get(1))), n);
-                    count.getAndIncrement();
-
-
-
-                } catch (NoSuchAlgorithmException e) {
+                } catch (NoSuchAlgorithmException e)
+                {
                     e.printStackTrace();
                 }
 
             }
         });
-
+        /*
         // Check each shadow entry against our rainbow table
-        for (ArrayList<String> row : shadow_matrix) {
+        for (ArrayList<String> row : shadow_matrix)
+        {
 
-            if (Password_Hash_Table.containsKey(toHash(row.get(2)))) {
+            if (Password_Hash_Table.containsKey(toHash(row.get(2))))
+            {
                 System.out.println(row
                         .get(0) + ":" + Password_Hash_Table.get(toHash(row.get(2))));
             }
-        }
+        }*/
+
+
     }
 
     public static String toHex(byte[] bytes) {
