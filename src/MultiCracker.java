@@ -1,13 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.ArrayList;
 import java.util.Scanner; // Import the Scanner class to read text files
@@ -30,10 +24,11 @@ public class MultiCracker
                 String data = fReader.nextLine();
                 line++;
                 localbuffer.add(data);
+                /*
                 if (line % 1000000 == 0)
                 {
                     System.out.println(("line: " + line));
-                }
+                }*/
             }
             fReader.close();
 
@@ -69,10 +64,8 @@ public class MultiCracker
             System.out.println("Error, usage: java ClassName password_file shadow_file");
             System.exit(1);
         }
-        //System.out.println(PasswordList);
-        //System.out.println(Shadow);
-        System.out.println("File Loaded...\n\n");
-        Hashtable<String, String> Password_Hash_Table = new Hashtable<String, String>();
+
+        //System.out.println("File Loaded...\n\n");
 
         // 2-Dim ArrayList to store shadow file as a matrix
         ArrayList<ArrayList<String>> shadow_matrix = new ArrayList<>(10);
@@ -93,12 +86,11 @@ public class MultiCracker
             shadow_matrix.add(row);
         }
 
-        //System.out.println(PasswordList.size());
         ForkJoinPool pool = new ForkJoinPool();
-        //System.out.println("begin: " + PasswordList.size());
-        //System.out.println(5/2);
-        PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 326000, 0, PasswordList.size(), shadow_matrix);
-        //PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 20, 0, PasswordList.size(), shadow_matrix);
+
+        // the threshold is set to 290000 but this value may change depending on the size of the file
+        PasswordTransform computeMD5Task = new PasswordTransform(PasswordList, 290000, 0, PasswordList.size(), shadow_matrix);
+
         pool.invoke(computeMD5Task);
 
 

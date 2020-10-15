@@ -80,17 +80,6 @@ class PasswordTransform extends RecursiveAction {
 
             }
         });
-        /*
-        // Check each shadow entry against our rainbow table
-        for (ArrayList<String> row : shadow_matrix)
-        {
-
-            if (Password_Hash_Table.containsKey(toHash(row.get(2))))
-            {
-                System.out.println(row
-                        .get(0) + ":" + Password_Hash_Table.get(toHash(row.get(2))));
-            }
-        }*/
 
 
     }
