@@ -1,3 +1,7 @@
+// David Apolinar and Ted Moore
+// CS645 - Fall 2020
+
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;

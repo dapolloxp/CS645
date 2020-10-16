@@ -1,3 +1,7 @@
+// David Apolinar and Ted Moore
+// CS645 - Fall 2020
+
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

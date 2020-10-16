@@ -1,5 +1,7 @@
 /*******
 * Prepared for Project 1, CS 645, Fall 2020, NJIT
+ * // David Apolinar and Ted Moore
+ * // CS645 - Fall 2020
 *******/
 
 
